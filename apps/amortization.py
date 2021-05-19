@@ -142,8 +142,8 @@ def app():
         ]
     )
 
-
-    st.title(titles[amort])
+    st.title("Amortização")
+    st.header(titles[amort])
     st.latex(latex_eqs[amort])
 
 

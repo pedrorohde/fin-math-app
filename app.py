@@ -1,6 +1,7 @@
 import streamlit as st
 from apps import *
 
+
 opt = st.sidebar.selectbox("Opções",
     options=[
         "Amortização",
@@ -12,5 +13,9 @@ opt = st.sidebar.selectbox("Opções",
 
 if opt == "Amortização":
     amortization()
+elif opt == "Renda Fixa":
+    fixed()
+elif opt == "Renda Variável":
+    variable()
 else:
     pass
