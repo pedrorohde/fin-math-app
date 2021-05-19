@@ -144,8 +144,6 @@ def app():
 
     st.title("Amortização")
     st.header(titles[amort])
-    st.latex(latex_eqs[amort])
-
 
     P = st.sidebar.number_input('Valor do Principal ($)', value=1000.0, min_value=0.01, step=1.0, format="%.2f")
     r = st.sidebar.number_input('Taxa de Juros (%)', value=1.0, min_value=0., step=0.5, format="%f")/100
@@ -154,3 +152,5 @@ def app():
     df = amortization_table(amort)(P,r,N)
 
     st.table(df.style.format("{:.2f}"))
+
+    st.latex(latex_eqs[amort])
