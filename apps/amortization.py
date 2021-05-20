@@ -153,6 +153,7 @@ def app():
     r = rate_col1.number_input('Taxa de Juros (%)', value=1.0, min_value=0., step=0.5, format="%f")/100
     r_type = rate_col2.radio("ao",
         options=utils.period_keys,
+        index=2,
         format_func=utils.format_period("singular"),
         key="rate_radio")
 
@@ -160,6 +161,7 @@ def app():
     N = period_col1.number_input('Número de Períodos', value=12, min_value=1)
     N_type = period_col2.radio("",
         options=utils.period_keys,
+        index=2,
         format_func=utils.format_period("plural"),
         key="period_radio"
     )
@@ -168,7 +170,7 @@ def app():
 
     df = amortization_table(amort)(P,r,N)
 
-    st.write(f"Taxa de juros ao {utils.format_period('singular')(N_type)} = {round(r*100,3)} %")
+    st.write(f"Taxa de juros = {round(r*100,3)}% ao {utils.format_period('singular')(N_type)}")
 
     st.table(df.style.format("{:.2f}"))
 
