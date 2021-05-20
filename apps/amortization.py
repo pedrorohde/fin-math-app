@@ -1,3 +1,4 @@
+from utils.utils import rate_conversion
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -163,7 +164,11 @@ def app():
         key="period_radio"
     )
 
+    r = rate_conversion(r, r_type, N_type)
+
     df = amortization_table(amort)(P,r,N)
+
+    st.write(f"Taxa de juros ao {utils.format_period('singular')(N_type)} = {round(r*100,3)} %")
 
     st.table(df.style.format("{:.2f}"))
 

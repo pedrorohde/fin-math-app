@@ -13,7 +13,7 @@ _rate_conversion_exponent = {
 
 
 def rate_conversion(rate, base, to):
-    return rate**(_rate_conversion_exponent[base]/_rate_conversion_exponent[to])
+    return (1+rate)**(_rate_conversion_exponent[base]/_rate_conversion_exponent[to])-1
 
 
 _period_singular = {
