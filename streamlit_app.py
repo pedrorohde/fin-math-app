@@ -1,6 +1,8 @@
 import streamlit as st
 from apps import *
 
+st.set_page_config(page_title='Calculadora Financeira')
+
 st.sidebar.markdown("# Calculadora de Matemática Financeira")
 
 opt = st.sidebar.selectbox("Opções",
