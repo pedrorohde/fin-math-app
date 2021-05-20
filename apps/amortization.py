@@ -153,10 +153,10 @@ def app():
         options=[
             "dia",
             "dia útil",
+            "mês",
             "bimestre",
             "trimestre",
             "semestre",
-            "mês",
             "ano"
     ])
 
@@ -166,10 +166,10 @@ def app():
         options=[
             "dias",
             "dias úteis",
+            "meses",
             "bimestres",
             "trimestres",
             "semestres",
-            "meses",
             "anos"
     ])
 
