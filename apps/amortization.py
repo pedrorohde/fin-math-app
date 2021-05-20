@@ -146,8 +146,35 @@ def app():
     st.header(titles[amort])
 
     P = st.sidebar.number_input('Valor do Principal ($)', value=1000.0, min_value=0.01, step=1.0, format="%.2f")
-    r = st.sidebar.number_input('Taxa de Juros (%)', value=1.0, min_value=0., step=0.5, format="%f")/100
-    N = st.sidebar.number_input('Número de Períodos', value=12, min_value=1)
+
+    rate_col1, rate_col2 = st.sidebar.beta_columns([15,10])
+    r = rate_col1.number_input('Taxa de Juros (%)', value=1.0, min_value=0., step=0.5, format="%f")/100
+    rate_col2.radio("ao", key="rate_radio",
+        options=[
+            "dia",
+            "dia útil",
+            "bimestre",
+            "trimestre",
+            "semestre",
+            "mês",
+            "ano"
+    ])
+
+    period_col1, period_col2 = st.sidebar.beta_columns([15,10])
+    N = period_col1.number_input('Número de Períodos', value=12, min_value=1)
+    period_col2.radio("", key="period_radio",
+        options=[
+            "dias",
+            "dias úteis",
+            "bimestres",
+            "trimestres",
+            "semestres",
+            "meses",
+            "anos"
+    ])
+
+    # r = st.sidebar.number_input('Taxa de Juros (%)', value=1.0, min_value=0., step=0.5, format="%f")/100
+    # N = st.sidebar.number_input('Número de Períodos', value=12, min_value=1)
 
     df = amortization_table(amort)(P,r,N)
 
