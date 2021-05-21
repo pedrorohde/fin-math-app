@@ -6,7 +6,7 @@ import utils
 
 def fixed_df(N):
     df = pd.DataFrame(
-        index=np.arange(N+1),
+        index=list(range(N+1))+['TOTAL'],
         columns=[
             'Aporte',
             'Rendimento',
@@ -27,6 +27,9 @@ def periodic_inflow_table(initial_value, inflow, rate, periods):
         df.loc[i,'Aporte'] = inflow
         df.loc[i,'Rendimento'] = (df.loc[i-1,'Valor Total'] + inflow)*rate
         df.loc[i,'Valor Total'] = df.loc[i-1,'Valor Total'] + df.loc[i,'Rendimento'] + df.loc[i,'Aporte']
+    
+    df.loc['TOTAL'] = df.sum()
+    df.loc['TOTAL','Valor Total'] = df.loc[periods,'Valor Total']
     
     return df
 
