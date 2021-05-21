@@ -120,17 +120,43 @@ def americano_table(principal, rate, periods):
 
 
 @st.cache
-def amortization_table(amort_system):
+def amortization_table(amort_system, grace):
     if amort_system == "PRICE":
-        return price_table
+        table_fun = price_table
     elif amort_system == "SAC":
-        return sac_table
+        table_fun = sac_table
     elif amort_system == "SAM":
-        return sam_table
+        table_fun = sam_table
     elif amort_system == "AMERICANO":
-        return americano_table
+        table_fun = americano_table
     else:
         return None
+    
+    if grace[1]:
+        def df_grace_fun(P,r):
+            df = amortization_df(grace[0])
+            df.loc[0,'Saldo Devedor'] = P
+            df.loc[:,['Amortização','Juros','Prestação']] = 0.0
+            for i in range(1,grace[0]+1):
+                df.loc[i,'Saldo Devedor'] = df.loc[i-1,'Saldo Devedor']*(1+r)
+            return df
+    else:
+        df_grace_fun = lambda P,r: americano_table(P, r, grace[0]+1).iloc[:-1]
+    
+    def amortization_fun(P,r,N):
+
+        df_grace = df_grace_fun(P,r)
+        df_amortization = table_fun(df_grace.loc[grace[0], 'Saldo Devedor'], r, N)
+
+        df = pd.concat([
+            df_grace.iloc[[0]],
+            df_grace.iloc[1:].rename(index=lambda idx: f"C{idx}"),
+            df_amortization.iloc[1:]
+        ])
+
+        return df
+    
+    return amortization_fun
 
 
 def app():
@@ -166,9 +192,13 @@ def app():
         key="period_radio"
     )
 
+    N_grace = st.sidebar.number_input(f'Carência em {utils.format_period("plural")(N_type)}', value=0, min_value=0)
+    cap_grace = st.sidebar.checkbox('Com capitalização de juros', value=True)
+    grace = (N_grace, cap_grace)
+
     r = rate_conversion(r, r_type, N_type)
 
-    df = amortization_table(amort)(P,r,N)
+    df = amortization_table(amort,grace)(P,r,N)
 
     st.write(f"Taxa de juros = {round(r*100,3)}% ao {utils.format_period('singular')(N_type)}")
 
