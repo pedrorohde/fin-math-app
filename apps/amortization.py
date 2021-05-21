@@ -1,4 +1,3 @@
-from utils.utils import rate_conversion
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -196,7 +195,7 @@ def app():
     cap_grace = st.sidebar.checkbox('Com capitalização de juros', value=True)
     grace = (N_grace, cap_grace)
 
-    r = rate_conversion(r, r_type, N_type)
+    r = utils.rate_conversion(r, r_type, N_type)
 
     df = amortization_table(amort,grace)(P,r,N)
 
